@@ -2,6 +2,5 @@ import "./index.css";
 
 import App from "./App";
 
-// debugger;
-const MyApp = new App();
-MyApp.initApplication();
+const Application = new App();
+Application.initApplication();

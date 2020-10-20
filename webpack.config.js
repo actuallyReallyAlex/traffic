@@ -1,3 +1,5 @@
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
@@ -44,6 +46,7 @@ const config = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src/index.html"),
     }),
+    new BundleAnalyzerPlugin({ analyzerMode: "static" }),
   ],
   resolve: {
     extensions: [".ts", ".js"],

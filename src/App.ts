@@ -1,97 +1,73 @@
 import * as THREE from "three";
+import { Clock, PerspectiveCamera, Renderer, Scene } from "three";
 
 import init from "./init";
 
+import CarLights from "./objects/CarLights";
 import Light from "./objects/Light";
 import Road from "./objects/Road";
-import CarLights from "./objects/CarLights";
-import settings from "./settings";
-import { Clock, PerspectiveCamera, Renderer, Scene } from "three";
 
-function lerp(current: number, target: number, speed = 0.1, limit = 0.001) {
-  let change = (target - current) * speed;
-  if (Math.abs(change) < limit) {
-    change = target - current;
-  }
-  return change;
-}
+import settings from "./settings";
+import { lerp } from "./util";
 
 class App {
   constructor() {
+    const { camera, clock, renderer, scene } = init();
+
+    this.camera = camera;
+    this.canvasContainer = document.getElementById("canvas-container");
+    this.clock = clock;
     this.fovTarget = 90;
+    this.leftLights = new CarLights("#fafafa", -60);
+    this.light = new Light();
     this.speedUpTarget = 0;
     this.speedUp = 0;
-    this.timeOffset = 0;
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
-    this.clock = new THREE.Clock();
-    this.canvasContainer = document.createElement("div");
-    this.canvasContainer.id = "canvas-container";
+    this.renderer = renderer;
+    this.rightLights = new CarLights("#ff102a", 60);
+    this.road = new Road();
     this.rootContainer = document.getElementById("root");
+    this.scene = scene;
+    this.timeOffset = 0;
 
     if (!this.rootContainer) {
       throw new Error("No root container!");
     }
-    this.rootContainer.appendChild(this.canvasContainer);
     this.rootContainer.addEventListener("mousedown", this.onMouseDown);
     this.rootContainer.addEventListener("mouseup", this.onMouseUp);
     this.rootContainer.addEventListener("mouseout", this.onMouseUp);
 
-    const { camera, renderer, scene } = init();
-    this.camera = camera;
-    this.renderer = renderer;
-    this.scene = scene;
-
-    // setupCameraInput(camera);
-
-    this.light = new Light();
-    this.road = new Road();
-    this.leftLights = new CarLights("#fafafa", -60);
-    this.rightLights = new CarLights("#ff102a", 60);
-
-    scene.add(this.light.object);
-    scene.add(this.road.object);
-    scene.add(this.leftLights.object);
-    scene.add(this.rightLights.object);
-
     // TODO - Really understand what the heck is happening here
     this.tick = this.tick.bind(this);
     this.initApplication = this.initApplication.bind(this);
-
-    // ! Won't work this wayu
-    // this.tick.bind(this)
-    // this.initApplication.bind(this)
   }
 
   camera: PerspectiveCamera;
-
   clock: Clock;
-
-  canvasContainer: HTMLElement;
-
+  canvasContainer: HTMLElement | null;
   fovTarget: number;
-
   leftLights: CarLights;
-
   light: Light;
-
   renderer: Renderer;
-
   rightLights: CarLights;
-
   road: Road;
-
   rootContainer: HTMLElement | null;
-
   scene: Scene;
-
   speedUp: number;
-
   speedUpTarget: number;
-
   timeOffset: number;
 
   initApplication() {
+    if (!this.canvasContainer) {
+      throw new Error("No canvas container!");
+    }
+
+    this.scene.add(this.light.object);
+    this.scene.add(this.road.object);
+    this.scene.add(this.leftLights.object);
+    this.scene.add(this.rightLights.object);
+
     // * Move left lights to the left of center
     this.leftLights.object.position.setX(
       -settings.roadWidth / 2 - settings.islandWidth / 2
@@ -125,8 +101,6 @@ class App {
     const canvas = this.renderer.domElement;
     this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
     this.camera.updateProjectionMatrix();
-    // cube.object.rotation.x += 0.01;
-    // cube.object.rotation.y += 0.01;
 
     const delta = this.clock.getDelta();
 

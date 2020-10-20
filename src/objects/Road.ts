@@ -3,35 +3,35 @@ import { Mesh } from "three";
 
 import settings from "../settings";
 
+const fragmentShader = `
+uniform vec3 uColor;
+void main(){
+    gl_FragColor = vec4(uColor,1.);
+}
+`;
+
+const vertexShader = `
+uniform float uTravelLength;
+#include <getDistortion_vertex>
+  void main(){
+        vec3 transformed = position.xyz;
+        
+    float progress = (transformed.y + uTravelLength / 2.) / uTravelLength;
+    vec3 distortion  = getDistortion(progress);
+    transformed.x += distortion.x;
+    transformed.z += distortion.y;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed.xyz, 1.);
+  }
+`;
+
 class Road {
   constructor() {
-    const object = this.createObject();
-    this.object = object;
+    this.createObject();
   }
 
-  object: Mesh;
+  object!: Mesh;
 
   createObject() {
-    const fragmentShader = `
-    uniform vec3 uColor;
-	void main(){
-        gl_FragColor = vec4(uColor,1.);
-    }
-`;
-    const vertexShader = `
-    uniform float uTravelLength;
-    #include <getDistortion_vertex>
-      void main(){
-            vec3 transformed = position.xyz;
-            
-        float progress = (transformed.y + uTravelLength / 2.) / uTravelLength;
-        vec3 distortion  = getDistortion(progress);
-        transformed.x += distortion.x;
-        transformed.z += distortion.y;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed.xyz, 1.);
-      }
-    `;
-
     const geometry = new THREE.PlaneBufferGeometry(
       settings.width,
       settings.length,
@@ -83,7 +83,7 @@ class Road {
     object.rotation.x = -Math.PI / 2;
     object.position.z = -settings.length / 2;
 
-    return object;
+    this.object = object;
   }
 }
 

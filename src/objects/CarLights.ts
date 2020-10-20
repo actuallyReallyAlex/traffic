@@ -2,59 +2,57 @@ import * as THREE from "three";
 
 import settings from "../settings";
 
-import { CustomCarLightMesh, CustomCarLightMaterial } from "../types";
+import { CustomCarLightMaterial, CustomCarLightMesh } from "../types";
+
+const fragmentShader = `
+uniform vec3 uColor;
+  void main() {
+      vec3 color = vec3(uColor);
+      gl_FragColor = vec4(color,1.);
+  }
+`;
+
+const vertexShader = `
+attribute vec3 aOffset;
+attribute vec2 aMetrics;
+uniform float uTime;
+uniform float uSpeed;
+uniform float uTravelLength;
+#include <getDistortion_vertex>
+  void main() {
+    vec3 transformed = position.xyz;
+    
+    float radius = aMetrics.r;
+    float len = aMetrics.g;
+    transformed.xy *= radius; 
+    transformed.z *= len;
+
+    float zOffset = uTime * uSpeed + aOffset.z;
+    zOffset = len - mod(zOffset, uTravelLength);
+
+    // transformed.z +=uTime * uSpeed;
+
+
+    // Keep them separated to make the next step easier!
+     transformed.z = transformed.z +zOffset ;
+        transformed.xy += aOffset.xy;
+
+        
+    float progress = abs(transformed.z / uTravelLength);
+    transformed.xyz += getDistortion(progress);
+
+  
+        vec4 mvPosition = modelViewMatrix * vec4(transformed,1.);
+        gl_Position = projectionMatrix * mvPosition;
+  }
+`;
 
 class CarLights {
   constructor(color: string, speed: number) {
-    this.fragmentShader = `
-    uniform vec3 uColor;
-      void main() {
-          vec3 color = vec3(uColor);
-          gl_FragColor = vec4(color,1.);
-      }
-    `;
-    this.vertexShader = `
-    attribute vec3 aOffset;
-    attribute vec2 aMetrics;
-    uniform float uTime;
-    uniform float uSpeed;
-    uniform float uTravelLength;
-    #include <getDistortion_vertex>
-      void main() {
-        vec3 transformed = position.xyz;
-        
-        float radius = aMetrics.r;
-        float len = aMetrics.g;
-        transformed.xy *= radius; 
-        transformed.z *= len;
-    
-        float zOffset = uTime * uSpeed + aOffset.z;
-        zOffset = len - mod(zOffset, uTravelLength);
-    
-        // transformed.z +=uTime * uSpeed;
-    
-    
-        // Keep them separated to make the next step easier!
-         transformed.z = transformed.z +zOffset ;
-            transformed.xy += aOffset.xy;
-    
-            
-        float progress = abs(transformed.z / uTravelLength);
-        transformed.xyz += getDistortion(progress);
-    
-      
-            vec4 mvPosition = modelViewMatrix * vec4(transformed,1.);
-            gl_Position = projectionMatrix * mvPosition;
-      }
-    `;
     this.createObject(color, speed);
   }
 
-  fragmentShader: string;
-
   object!: CustomCarLightMesh;
-
-  vertexShader: string;
 
   createObject(color: string, speed: number) {
     const curve = new THREE.LineCurve3(
@@ -120,8 +118,8 @@ class CarLights {
     );
 
     const material: CustomCarLightMaterial = new THREE.ShaderMaterial({
-      fragmentShader: this.fragmentShader,
-      vertexShader: this.vertexShader,
+      fragmentShader,
+      vertexShader,
       uniforms: {
         uColor: new THREE.Uniform(new THREE.Color(color)),
         uTime: new THREE.Uniform(0),
