@@ -1,0 +1,34 @@
+{
+  "name": "traffic",
+  "version": "1.0.0",
+  "description": "https://typanus.net/codrops/2019/11/13/high-speed-light-trails-in-three-js/",
+  "scripts": {
+    "build": "rimraf dist && webpack --mode=production",
+    "develop": "webpack-dev-server"
+  },
+  "dependencies": {
+    "three": "^0.121.1"
+  },
+  "devDependencies": {
+    "@types/three": "^0.103.2",
+    "css-loader": "^5.0.0",
+    "html-webpack-plugin": "^4.5.0",
+    "rimraf": "^3.0.2",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.0.5",
+    "typescript": "^4.0.3",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexlee-dev/traffic.git"
+  },
+  "author": "Alex Lee (www.alexlee.dev)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexlee-dev/traffic/issues"
+  },
+  "homepage": "https://github.com/alexlee-dev/traffic#readme"
+}
