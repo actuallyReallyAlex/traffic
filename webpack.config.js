@@ -46,7 +46,7 @@ const config = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src/index.html"),
     }),
-    new BundleAnalyzerPlugin({ analyzerMode: "static" }),
+    // new BundleAnalyzerPlugin({ analyzerMode: "static" }),
   ],
   resolve: {
     extensions: [".ts", ".js"],

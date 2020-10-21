@@ -10,6 +10,28 @@ export interface CustomCarLightMaterial extends ShaderMaterial {
   uniforms: { [uniform: string]: IUniform };
 }
 
+export type CarLightColor =
+  | "black"
+  | "blue"
+  | "green"
+  | "red"
+  | "white"
+  | "yellow";
+
+export interface CarLightColors {
+  black: "black";
+  blue: "blue";
+  green: "green";
+  red: "red";
+  white: "white";
+  yellow: "yellow";
+}
+
+export interface GUIParams {
+  leftLightsColor: CarLightColor;
+  rightLightsColor: CarLightColor;
+}
+
 export interface Input {
   coordinate: Coordinate;
   initialValue: number;

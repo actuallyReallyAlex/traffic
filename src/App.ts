@@ -1,5 +1,7 @@
-import * as THREE from "three";
 import { Clock, PerspectiveCamera, Renderer, Scene } from "three";
+
+import Stats from "three/examples/jsm/libs/stats.module";
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
 import init from "./init";
 
@@ -9,6 +11,8 @@ import Road from "./objects/Road";
 
 import settings from "./settings";
 import { lerp } from "./util";
+
+import { CarLightColor, CarLightColors, GUIParams } from "./types";
 
 class App {
   constructor() {
@@ -22,8 +26,8 @@ class App {
     this.light = new Light();
     this.speedUpTarget = 0;
     this.speedUp = 0;
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
+    // this.onMouseDown = this.onMouseDown.bind(this);
+    // this.onMouseUp = this.onMouseUp.bind(this);
     this.renderer = renderer;
     this.rightLights = new CarLights("#ff102a", 60);
     this.road = new Road();
@@ -34,14 +38,67 @@ class App {
     if (!this.rootContainer) {
       throw new Error("No root container!");
     }
-    this.rootContainer.addEventListener("mousedown", this.onMouseDown);
-    this.rootContainer.addEventListener("mouseup", this.onMouseUp);
-    this.rootContainer.addEventListener("mouseout", this.onMouseUp);
+    // this.rootContainer.addEventListener("mousedown", this.onMouseDown);
+    // this.rootContainer.addEventListener("mouseup", this.onMouseUp);
+    // this.rootContainer.addEventListener("mouseout", this.onMouseUp);
+
+    this.stats = Stats();
+    this.gui = new GUI();
+
+    this.params = {
+      leftLightsColor: "white",
+      rightLightsColor: "red",
+    };
+
+    const guiFolderLeftLights = this.gui.addFolder("Left Lights");
+    const guiFolderRightLights = this.gui.addFolder("Right Lights");
+    // const guiFolderRoad = this.gui.addFolder("Road");
+
+    const carLightColors: CarLightColors = {
+      black: "black",
+      blue: "blue",
+      green: "green",
+      red: "red",
+      white: "white",
+      yellow: "yellow",
+    };
+
+    guiFolderLeftLights
+      .add(this.params, "leftLightsColor", carLightColors)
+      .name("color")
+      .onChange((val: CarLightColor) => {
+        this.scene.remove(this.leftLights.object);
+        this.leftLights = new CarLights(val, -60);
+        this.leftLights.object.position.setX(
+          -settings.roadWidth / 2 - settings.islandWidth / 2
+        );
+        this.scene.add(this.leftLights.object);
+      });
+    guiFolderRightLights
+      .add(this.params, "rightLightsColor", carLightColors)
+      .name("color")
+      .onChange((val: CarLightColor) => {
+        this.scene.remove(this.rightLights.object);
+        this.rightLights = new CarLights(val, 60);
+        this.rightLights.object.position.setX(
+          settings.roadWidth / 2 + settings.islandWidth / 2
+        );
+        this.scene.add(this.rightLights.object);
+      });
+
+    guiFolderLeftLights.open();
+    guiFolderRightLights.open();
+
+    this.rootContainer.appendChild(this.stats.dom);
 
     // TODO - Really understand what the heck is happening here
     this.tick = this.tick.bind(this);
     this.initApplication = this.initApplication.bind(this);
   }
+
+  stats: Stats;
+  gui: any;
+  params: GUIParams;
 
   camera: PerspectiveCamera;
   clock: Clock;
@@ -86,15 +143,15 @@ class App {
     this.renderer.render(this.scene, this.camera);
   }
 
-  onMouseDown() {
-    this.speedUpTarget = 0.1;
-    this.fovTarget = 140;
-  }
+  // onMouseDown() {
+  // this.speedUpTarget = 0.1;
+  // this.fovTarget = 140;
+  // }
 
-  onMouseUp() {
-    this.speedUpTarget = 0;
-    this.fovTarget = 90;
-  }
+  // onMouseUp() {
+  // this.speedUpTarget = 0;
+  // this.fovTarget = 90;
+  // }
 
   tick() {
     if (!this) return;
@@ -103,6 +160,8 @@ class App {
     this.camera.updateProjectionMatrix();
 
     const delta = this.clock.getDelta();
+
+    this.stats.update();
 
     this.render(delta);
     this.update(delta);
