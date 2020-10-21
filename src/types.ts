@@ -55,6 +55,8 @@ export interface GUIParams {
   rightLightsColor: CarLightColor;
   rightLightsDirection: CarLightsDirection;
   rightLightsSpeed: number;
+  verticalDistortionX: number;
+  verticalDistortionY: number;
 }
 
 export interface Input {

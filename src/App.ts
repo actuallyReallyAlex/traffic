@@ -24,6 +24,8 @@ class App {
       rightLightsColor: "red",
       rightLightsDirection: "away",
       rightLightsSpeed: 50,
+      verticalDistortionX: -40,
+      verticalDistortionY: 2.5
     };
 
     this.camera = camera;

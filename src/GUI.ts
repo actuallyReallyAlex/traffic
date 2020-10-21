@@ -19,10 +19,14 @@ class ApplicationGUI {
     const horizontalDistortionFolder = this.gui.addFolder(
       "Horizontal Distortion"
     );
+    const verticalDistortionFolder = this.gui.addFolder(
+      "Vertical Distortion"
+    );
     // * Open folders
     leftLightsFolder.open();
     rightLightsFolder.open();
     horizontalDistortionFolder.open();
+    verticalDistortionFolder.open();
 
     this.inputs = [
       // * Left Car Lights
@@ -103,6 +107,7 @@ class ApplicationGUI {
         value: 0,
         value2: 100,
       },
+      // * Horizontal Distortion
       {
         folder: horizontalDistortionFolder,
         name: "x",
@@ -154,6 +159,61 @@ class ApplicationGUI {
           );
         },
         paramKey: "horizontalDistortionY",
+        value: 1,
+        value2: 5,
+      },
+      // * Vertical Distortion
+      {
+        folder: verticalDistortionFolder,
+        name: "x",
+        onChange: (xValue: number) => {
+          this.application.leftLights.object.material.uniforms.uDistortionY = new THREE.Uniform(
+            new THREE.Vector2(
+              xValue,
+              this.application.params.verticalDistortionY
+            )
+          );
+          this.application.rightLights.object.material.uniforms.uDistortionY = new THREE.Uniform(
+            new THREE.Vector2(
+              xValue,
+              this.application.params.verticalDistortionY
+            )
+          );
+          this.application.road.object.material.uniforms.uDistortionY = new THREE.Uniform(
+            new THREE.Vector2(
+              xValue,
+              this.application.params.verticalDistortionY
+            )
+          );
+        },
+        paramKey: "verticalDistortionX",
+        value: -100,
+        value2: 100,
+      },
+      {
+        folder: verticalDistortionFolder,
+        name: "y",
+        onChange: (yValue: number) => {
+          this.application.leftLights.object.material.uniforms.uDistortionY = new THREE.Uniform(
+            new THREE.Vector2(
+              this.application.params.verticalDistortionX,
+              yValue
+            )
+          );
+          this.application.rightLights.object.material.uniforms.uDistortionY = new THREE.Uniform(
+            new THREE.Vector2(
+              this.application.params.verticalDistortionX,
+              yValue
+            )
+          );
+          this.application.road.object.material.uniforms.uDistortionY = new THREE.Uniform(
+            new THREE.Vector2(
+              this.application.params.verticalDistortionX,
+              yValue
+            )
+          );
+        },
+        paramKey: "verticalDistortionY",
         value: 1,
         value2: 5,
       },
