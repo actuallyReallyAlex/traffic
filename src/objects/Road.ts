@@ -1,7 +1,8 @@
 import * as THREE from "three";
-import { Mesh } from "three";
 
 import settings from "../settings";
+
+import { CustomRoadMaterial, CustomRoadMesh } from "../types";
 
 const fragmentShader = `
 uniform vec3 uColor;
@@ -29,7 +30,7 @@ class Road {
     this.createObject();
   }
 
-  object!: Mesh;
+  object!: CustomRoadMesh;
 
   createObject() {
     const geometry = new THREE.PlaneBufferGeometry(
@@ -39,7 +40,7 @@ class Road {
       200
     );
 
-    const material = new THREE.ShaderMaterial({
+    const material: CustomRoadMaterial = new THREE.ShaderMaterial({
       fragmentShader,
       vertexShader,
       uniforms: {

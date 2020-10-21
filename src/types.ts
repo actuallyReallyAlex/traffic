@@ -15,7 +15,15 @@ export interface CustomCarLightMesh extends Mesh {
   material: CustomCarLightMaterial;
 }
 
+export interface CustomRoadMesh extends Mesh {
+  material: CustomRoadMaterial;
+}
+
 export interface CustomCarLightMaterial extends ShaderMaterial {
+  uniforms: { [uniform: string]: IUniform };
+}
+
+export interface CustomRoadMaterial extends ShaderMaterial {
   uniforms: { [uniform: string]: IUniform };
 }
 
@@ -39,6 +47,8 @@ export interface CarLightColors {
 export type CarLightsDirection = "away" | "toward";
 
 export interface GUIParams {
+  horizontalDistortionX: number;
+  horizontalDistortionY: number;
   leftLightsColor: CarLightColor;
   leftLightsDirection: CarLightsDirection;
   leftLightsSpeed: number;

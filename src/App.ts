@@ -16,6 +16,8 @@ class App {
   constructor() {
     const { camera, clock, renderer, scene } = init();
     this.params = {
+      horizontalDistortionX: 80,
+      horizontalDistortionY: 3,
       leftLightsColor: "white",
       leftLightsDirection: "toward",
       leftLightsSpeed: 50,

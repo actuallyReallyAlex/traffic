@@ -125,6 +125,7 @@ class CarLights {
         uTime: new THREE.Uniform(0),
         uTravelLength: new THREE.Uniform(settings.length),
         uSpeed: new THREE.Uniform(speed),
+        // TODO - Use params here for all param-able values in constructor
         uDistortionX: new THREE.Uniform(new THREE.Vector2(80, 3)),
         uDistortionY: new THREE.Uniform(new THREE.Vector2(-40, 2.5)),
       },
