@@ -15,19 +15,37 @@ import { GUIParams } from "./types";
 class App {
   constructor() {
     const { camera, clock, renderer, scene } = init();
+    this.params = {
+      leftLightsColor: "white",
+      leftLightsDirection: "toward",
+      leftLightsSpeed: 50,
+      rightLightsColor: "red",
+      rightLightsDirection: "away",
+      rightLightsSpeed: 50,
+    };
 
     this.camera = camera;
     this.canvasContainer = document.getElementById("canvas-container");
     this.clock = clock;
     this.fovTarget = 90;
-    this.leftLights = new CarLights("#fafafa", -60);
+    this.leftLights = new CarLights(
+      "#fafafa",
+      this.params.leftLightsDirection === "away"
+        ? this.params.leftLightsSpeed
+        : -this.params.leftLightsSpeed
+    );
     this.light = new Light();
     this.speedUpTarget = 0;
     this.speedUp = 0;
     // this.onMouseDown = this.onMouseDown.bind(this);
     // this.onMouseUp = this.onMouseUp.bind(this);
     this.renderer = renderer;
-    this.rightLights = new CarLights("#ff102a", 60);
+    this.rightLights = new CarLights(
+      "#ff102a",
+      this.params.rightLightsDirection === "away"
+        ? this.params.rightLightsSpeed
+        : -this.params.rightLightsSpeed
+    );
     this.road = new Road();
     this.rootContainer = document.getElementById("root");
     this.scene = scene;
@@ -41,10 +59,6 @@ class App {
     // this.rootContainer.addEventListener("mouseout", this.onMouseUp);
 
     this.stats = Stats();
-    this.params = {
-      leftLightsColor: "white",
-      rightLightsColor: "red",
-    };
 
     this.gui = new ApplicationGUI(this);
 

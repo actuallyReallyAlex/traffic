@@ -27,9 +27,15 @@ export interface CarLightColors {
   yellow: "yellow";
 }
 
+export type CarLightsDirection = "away" | "toward";
+
 export interface GUIParams {
   leftLightsColor: CarLightColor;
+  leftLightsDirection: CarLightsDirection;
+  leftLightsSpeed: number;
   rightLightsColor: CarLightColor;
+  rightLightsDirection: CarLightsDirection;
+  rightLightsSpeed: number;
 }
 
 export interface Input {
