@@ -1,18 +1,16 @@
 import { Clock, PerspectiveCamera, Renderer, Scene } from "three";
-
 import Stats from "three/examples/jsm/libs/stats.module";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
-
-import init from "./init";
 
 import CarLights from "./objects/CarLights";
 import Light from "./objects/Light";
 import Road from "./objects/Road";
 
-import settings from "./settings";
+import ApplicationGUI from "./GUI";
+import init from "./init";
 import { lerp } from "./util";
+import settings from "./settings";
 
-import { CarLightColor, CarLightColors, GUIParams } from "./types";
+import { GUIParams } from "./types";
 
 class App {
   constructor() {
@@ -43,51 +41,12 @@ class App {
     // this.rootContainer.addEventListener("mouseout", this.onMouseUp);
 
     this.stats = Stats();
-    this.gui = new GUI();
-
     this.params = {
       leftLightsColor: "white",
       rightLightsColor: "red",
     };
 
-    const guiFolderLeftLights = this.gui.addFolder("Left Lights");
-    const guiFolderRightLights = this.gui.addFolder("Right Lights");
-    // const guiFolderRoad = this.gui.addFolder("Road");
-
-    const carLightColors: CarLightColors = {
-      black: "black",
-      blue: "blue",
-      green: "green",
-      red: "red",
-      white: "white",
-      yellow: "yellow",
-    };
-
-    guiFolderLeftLights
-      .add(this.params, "leftLightsColor", carLightColors)
-      .name("color")
-      .onChange((val: CarLightColor) => {
-        this.scene.remove(this.leftLights.object);
-        this.leftLights = new CarLights(val, -60);
-        this.leftLights.object.position.setX(
-          -settings.roadWidth / 2 - settings.islandWidth / 2
-        );
-        this.scene.add(this.leftLights.object);
-      });
-    guiFolderRightLights
-      .add(this.params, "rightLightsColor", carLightColors)
-      .name("color")
-      .onChange((val: CarLightColor) => {
-        this.scene.remove(this.rightLights.object);
-        this.rightLights = new CarLights(val, 60);
-        this.rightLights.object.position.setX(
-          settings.roadWidth / 2 + settings.islandWidth / 2
-        );
-        this.scene.add(this.rightLights.object);
-      });
-
-    guiFolderLeftLights.open();
-    guiFolderRightLights.open();
+    this.gui = new ApplicationGUI(this);
 
     this.rootContainer.appendChild(this.stats.dom);
 
@@ -96,16 +55,14 @@ class App {
     this.initApplication = this.initApplication.bind(this);
   }
 
-  stats: Stats;
-  gui: any;
-  params: GUIParams;
-
   camera: PerspectiveCamera;
   clock: Clock;
   canvasContainer: HTMLElement | null;
   fovTarget: number;
+  gui: ApplicationGUI;
   leftLights: CarLights;
   light: Light;
+  params: GUIParams;
   renderer: Renderer;
   rightLights: CarLights;
   road: Road;
@@ -113,6 +70,7 @@ class App {
   scene: Scene;
   speedUp: number;
   speedUpTarget: number;
+  stats: Stats;
   timeOffset: number;
 
   initApplication() {
