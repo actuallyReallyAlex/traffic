@@ -1,5 +1,14 @@
 import { IUniform, Mesh, ShaderMaterial } from "three";
 
+export interface ApplicationInput {
+  folder: any;
+  name: string;
+  onChange: (value: any) => void;
+  paramKey: keyof GUIParams;
+  value: any;
+  value2?: any;
+}
+
 export type Coordinate = "x" | "y" | "z";
 
 export interface CustomCarLightMesh extends Mesh {
