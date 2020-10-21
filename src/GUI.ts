@@ -32,12 +32,9 @@ class ApplicationGUI {
     );
     leftLightsColorSelect.name("color");
     leftLightsColorSelect.onChange((colorValue: CarLightColor) => {
-      this.application.scene.remove(this.application.leftLights.object);
-      this.application.leftLights = new CarLights(colorValue, -60);
-      this.application.leftLights.object.position.setX(
-        -settings.roadWidth / 2 - settings.islandWidth / 2
+      this.application.leftLights.object.material.uniforms.uColor = new THREE.Uniform(
+        new THREE.Color(colorValue)
       );
-      this.application.scene.add(this.application.leftLights.object);
     });
 
     // * Left Lights Direction
@@ -110,12 +107,9 @@ class ApplicationGUI {
     );
     rightLightsColorSelect.name("color");
     rightLightsColorSelect.onChange((colorValue: CarLightColor) => {
-      this.application.scene.remove(this.application.rightLights.object);
-      this.application.rightLights = new CarLights(colorValue, 60);
-      this.application.rightLights.object.position.setX(
-        settings.roadWidth / 2 + settings.islandWidth / 2
+      this.application.rightLights.object.material.uniforms.uColor = new THREE.Uniform(
+        new THREE.Color(colorValue)
       );
-      this.application.scene.add(this.application.rightLights.object);
     });
 
     // * Open folders
