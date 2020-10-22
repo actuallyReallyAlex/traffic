@@ -2,7 +2,13 @@ import * as THREE from "three";
 
 import settings from "../settings";
 
-import { CustomCarLightMaterial, CustomCarLightMesh } from "../types";
+import {
+  CarLightsPlacement,
+  CarLightsDirection,
+  CustomCarLightMaterial,
+  CustomCarLightMesh,
+  GUIParams,
+} from "../types";
 
 const fragmentShader = `
 uniform vec3 uColor;
@@ -48,13 +54,23 @@ uniform float uTravelLength;
 `;
 
 class CarLights {
-  constructor(color: string, speed: number) {
-    this.createObject(color, speed);
+  constructor(params: GUIParams, placement: CarLightsPlacement) {
+    this.createObject(params, placement);
   }
 
   object!: CustomCarLightMesh;
+  placement!: CarLightsPlacement;
 
-  createObject(color: string, speed: number) {
+  createObject(params: GUIParams, placment: CarLightsPlacement) {
+    const colorParam =
+      placment === "left" ? params.leftLightsColor : params.rightLightsColor;
+    const directionParam =
+      placment === "left"
+        ? params.leftLightsDirection
+        : params.rightLightsDirection;
+    const speedParam =
+      placment === "left" ? params.leftLightsSpeed : params.rightLightsSpeed;
+
     const curve = new THREE.LineCurve3(
       new THREE.Vector3(0, 0, 0),
       new THREE.Vector3(0, 0, -1)
@@ -121,12 +137,25 @@ class CarLights {
       fragmentShader,
       vertexShader,
       uniforms: {
-        uColor: new THREE.Uniform(new THREE.Color(color)),
+        uColor: new THREE.Uniform(new THREE.Color(colorParam)),
         uTime: new THREE.Uniform(0),
         uTravelLength: new THREE.Uniform(settings.length),
-        uSpeed: new THREE.Uniform(speed),
-        uDistortionX: new THREE.Uniform(new THREE.Vector2(80, 3)),
-        uDistortionY: new THREE.Uniform(new THREE.Vector2(-40, 2.5)),
+        uSpeed: new THREE.Uniform(
+          directionParam === "away" ? -speedParam : speedParam
+        ),
+        // TODO - Use params here for all param-able values in constructor
+        uDistortionX: new THREE.Uniform(
+          new THREE.Vector2(
+            params.horizontalDistortionX,
+            params.horizontalDistortionY
+          )
+        ),
+        uDistortionY: new THREE.Uniform(
+          new THREE.Vector2(
+            params.verticalDistortionX,
+            params.verticalDistortionY
+          )
+        ),
       },
     });
     // ? Wonder how this changes the final render
