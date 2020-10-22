@@ -81,7 +81,7 @@ class App {
   stats: Stats;
   timeOffset: number;
 
-  initApplication() {
+  initApplication(): void {
     if (!this.canvasContainer) {
       throw new Error("No canvas container!");
     }
@@ -105,7 +105,7 @@ class App {
     this.tick();
   }
 
-  render(delta: number) {
+  render(delta: number): void {
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -119,7 +119,7 @@ class App {
   // this.fovTarget = 90;
   // }
 
-  tick() {
+  tick(): void {
     if (!this) return;
     const canvas = this.renderer.domElement;
     this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
@@ -134,9 +134,9 @@ class App {
     requestAnimationFrame(this.tick);
   }
 
-  update(delta: number) {
-    let coefficient = -60 * Math.log2(1 - 0.1);
-    let lerpT = Math.exp(-coefficient * delta);
+  update(delta: number): void {
+    const coefficient = -60 * Math.log2(1 - 0.1);
+    const lerpT = Math.exp(-coefficient * delta);
     this.speedUp += lerp(
       this.speedUp,
       this.speedUpTarget,
@@ -147,11 +147,11 @@ class App {
     // Also frame-dependent
     this.timeOffset += this.speedUp * delta;
 
-    let time = this.clock.elapsedTime + this.timeOffset;
+    const time = this.clock.elapsedTime + this.timeOffset;
     this.leftLights.update(time);
     this.rightLights.update(time);
 
-    let fovChange = lerp(this.camera.fov, this.fovTarget, lerpT);
+    const fovChange = lerp(this.camera.fov, this.fovTarget, lerpT);
     if (fovChange !== 0) {
       this.camera.fov += fovChange * delta * 6;
       this.camera.updateProjectionMatrix();

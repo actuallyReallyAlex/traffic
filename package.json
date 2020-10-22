@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "https://typanus.net/codrops/2019/11/13/high-speed-light-trails-in-three-js/",
   "scripts": {
-    "build": "rimraf dist && webpack --mode=production",
+    "build": "rimraf dist && npm run lint && webpack --mode=production",
     "develop": "webpack-dev-server",
     "lint": "eslint ./src"
   },

@@ -32,7 +32,7 @@ class Road {
 
   object!: CustomRoadMesh;
 
-  createObject() {
+  createObject(): void {
     const geometry = new THREE.PlaneBufferGeometry(
       settings.width,
       settings.length,
