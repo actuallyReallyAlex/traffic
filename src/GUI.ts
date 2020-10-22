@@ -2,8 +2,6 @@ import * as THREE from "three";
 import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
 import App from "./App";
-import CarLights from "./objects/CarLights";
-import settings from "./settings";
 
 import { carLightColors } from "./constants";
 
@@ -19,9 +17,7 @@ class ApplicationGUI {
     const horizontalDistortionFolder = this.gui.addFolder(
       "Horizontal Distortion"
     );
-    const verticalDistortionFolder = this.gui.addFolder(
-      "Vertical Distortion"
-    );
+    const verticalDistortionFolder = this.gui.addFolder("Vertical Distortion");
     // * Open folders
     leftLightsFolder.open();
     rightLightsFolder.open();
@@ -225,7 +221,7 @@ class ApplicationGUI {
   gui: any;
   inputs: ApplicationInput[];
 
-  initializeGUI() {
+  initializeGUI(): void {
     this.inputs.forEach((input) => {
       const inputElement = input.folder.add(
         this.application.params,

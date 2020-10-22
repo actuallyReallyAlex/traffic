@@ -1,8 +1,14 @@
 import * as THREE from "three";
+import { Clock, PerspectiveCamera, Renderer, Scene } from "three";
 
 import settings from "./settings";
 
-const init = () => {
+const init = (): {
+  camera: PerspectiveCamera;
+  clock: Clock;
+  renderer: Renderer;
+  scene: Scene;
+} => {
   // * Setup Clock
   const clock = new THREE.Clock();
 

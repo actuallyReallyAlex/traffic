@@ -8,7 +8,7 @@ class Light {
 
   object!: DirectionalLight;
 
-  creratObject() {
+  creratObject(): void {
     const color = 0xffffff;
     const intensity = 1;
     const object = new THREE.DirectionalLight(color, intensity);

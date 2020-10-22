@@ -4,7 +4,6 @@ import settings from "../settings";
 
 import {
   CarLightsPlacement,
-  CarLightsDirection,
   CustomCarLightMaterial,
   CustomCarLightMesh,
   GUIParams,
@@ -61,7 +60,7 @@ class CarLights {
   object!: CustomCarLightMesh;
   placement!: CarLightsPlacement;
 
-  createObject(params: GUIParams, placment: CarLightsPlacement) {
+  createObject(params: GUIParams, placment: CarLightsPlacement): void {
     const colorParam =
       placment === "left" ? params.leftLightsColor : params.rightLightsColor;
     const directionParam =
@@ -194,7 +193,7 @@ class CarLights {
     this.object = object;
   }
 
-  update(t: number) {
+  update(t: number): void {
     // * t = time (delta)
     this.object.material.uniforms.uTime.value = t;
   }

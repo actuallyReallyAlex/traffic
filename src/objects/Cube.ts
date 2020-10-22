@@ -9,7 +9,7 @@ class Cube {
 
   object: Mesh;
 
-  createObject() {
+  createObject(): Mesh {
     const geometry = new THREE.BoxBufferGeometry(2, 2, 2);
     const material = new THREE.MeshPhongMaterial({ color: "red" });
     const object = new THREE.Mesh(geometry, material);
