@@ -9,6 +9,8 @@ export interface ApplicationInput {
   value2?: any;
 }
 
+export type CarLightsPlacement = "left" | "right";
+
 export type Coordinate = "x" | "y" | "z";
 
 export interface CustomCarLightMesh extends Mesh {

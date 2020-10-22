@@ -25,31 +25,21 @@ class App {
       rightLightsDirection: "away",
       rightLightsSpeed: 50,
       verticalDistortionX: -40,
-      verticalDistortionY: 2.5
+      verticalDistortionY: 2.5,
     };
 
     this.camera = camera;
     this.canvasContainer = document.getElementById("canvas-container");
     this.clock = clock;
     this.fovTarget = 90;
-    this.leftLights = new CarLights(
-      "#fafafa",
-      this.params.leftLightsDirection === "away"
-        ? this.params.leftLightsSpeed
-        : -this.params.leftLightsSpeed
-    );
+    this.leftLights = new CarLights(this.params, "left");
     this.light = new Light();
     this.speedUpTarget = 0;
     this.speedUp = 0;
     // this.onMouseDown = this.onMouseDown.bind(this);
     // this.onMouseUp = this.onMouseUp.bind(this);
     this.renderer = renderer;
-    this.rightLights = new CarLights(
-      "#ff102a",
-      this.params.rightLightsDirection === "away"
-        ? this.params.rightLightsSpeed
-        : -this.params.rightLightsSpeed
-    );
+    this.rightLights = new CarLights(this.params, "right");
     this.road = new Road();
     this.rootContainer = document.getElementById("root");
     this.scene = scene;
