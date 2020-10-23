@@ -18,11 +18,13 @@ class ApplicationGUI {
       "Horizontal Distortion"
     );
     const verticalDistortionFolder = this.gui.addFolder("Vertical Distortion");
+    const cameraFolder = this.gui.addFolder("Camera");
     // * Open folders
     leftLightsFolder.open();
     rightLightsFolder.open();
     horizontalDistortionFolder.open();
     verticalDistortionFolder.open();
+    cameraFolder.open();
 
     this.inputs = [
       // * Left Car Lights
@@ -212,6 +214,14 @@ class ApplicationGUI {
         paramKey: "verticalDistortionY",
         value: 1,
         value2: 5,
+      },
+      {
+        folder: cameraFolder,
+        name: "follow",
+        onChange: (followValue: boolean) => {
+          console.log({ followValue });
+        },
+        paramKey: "follow",
       },
     ];
     this.initializeGUI();

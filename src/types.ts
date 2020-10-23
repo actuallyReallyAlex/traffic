@@ -5,7 +5,7 @@ export interface ApplicationInput {
   name: string;
   onChange: (value: any) => void;
   paramKey: keyof GUIParams;
-  value: any;
+  value?: any;
   value2?: any;
 }
 
@@ -49,6 +49,7 @@ export interface CarLightColors {
 export type CarLightsDirection = "away" | "toward";
 
 export interface GUIParams {
+  follow: boolean;
   horizontalDistortionX: number;
   horizontalDistortionY: number;
   leftLightsColor: CarLightColor;
