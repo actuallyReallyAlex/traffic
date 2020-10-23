@@ -1,4 +1,4 @@
-import { IUniform, Mesh, ShaderMaterial } from "three";
+import { Line, IUniform, Mesh, ShaderMaterial } from "three";
 
 export interface ApplicationInput {
   folder: any;
@@ -15,6 +15,10 @@ export type Coordinate = "x" | "y" | "z";
 
 export interface CustomCarLightMesh extends Mesh {
   material: CustomCarLightMaterial;
+}
+
+export interface CustomRoadWireframe extends Line {
+  material: CustomRoadMaterial;
 }
 
 export interface CustomRoadMesh extends Mesh {

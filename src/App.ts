@@ -147,6 +147,13 @@ class App {
     // * Place Canvas in Document
     this.canvasContainer.append(this.renderer.domElement);
 
+    // * Sets the camera to a better spot
+    this.camera.position.set(-216, 119, 102);
+
+    this.scene.add(this.road.wireframe);
+    (window as any).road = this.road;
+    (window as any).camera = this.camera;
+
     this.tick();
   }
 

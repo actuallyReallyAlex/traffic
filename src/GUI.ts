@@ -128,6 +128,12 @@ class ApplicationGUI {
               this.application.params.horizontalDistortionY
             )
           );
+          this.application.road.wireframe.material.uniforms.uDistortionX = new THREE.Uniform(
+            new THREE.Vector2(
+              xValue,
+              this.application.params.horizontalDistortionY
+            )
+          );
         },
         paramKey: "horizontalDistortionX",
         value: -100,
@@ -150,6 +156,12 @@ class ApplicationGUI {
             )
           );
           this.application.road.object.material.uniforms.uDistortionX = new THREE.Uniform(
+            new THREE.Vector2(
+              this.application.params.horizontalDistortionX,
+              yValue
+            )
+          );
+          this.application.road.wireframe.material.uniforms.uDistortionX = new THREE.Uniform(
             new THREE.Vector2(
               this.application.params.horizontalDistortionX,
               yValue
@@ -183,6 +195,12 @@ class ApplicationGUI {
               this.application.params.verticalDistortionY
             )
           );
+          this.application.road.wireframe.material.uniforms.uDistortionY = new THREE.Uniform(
+            new THREE.Vector2(
+              xValue,
+              this.application.params.verticalDistortionY
+            )
+          );
         },
         paramKey: "verticalDistortionX",
         value: -100,
@@ -205,6 +223,12 @@ class ApplicationGUI {
             )
           );
           this.application.road.object.material.uniforms.uDistortionY = new THREE.Uniform(
+            new THREE.Vector2(
+              this.application.params.verticalDistortionX,
+              yValue
+            )
+          );
+          this.application.road.wireframe.material.uniforms.uDistortionY = new THREE.Uniform(
             new THREE.Vector2(
               this.application.params.verticalDistortionX,
               yValue
