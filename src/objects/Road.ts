@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 import settings from "../settings";
 
-import { CustomRoadMaterial, CustomRoadMesh } from "../types";
+import { CustomRoadMaterial, CustomRoadMesh, GUIParams } from "../types";
 
 const fragmentShader = `
 uniform vec3 uColor;
@@ -26,13 +26,13 @@ uniform float uTravelLength;
 `;
 
 class Road {
-  constructor() {
-    this.createObject();
+  constructor(params: GUIParams) {
+    this.createObject(params);
   }
 
   object!: CustomRoadMesh;
 
-  createObject(): void {
+  createObject(params: GUIParams): void {
     const geometry = new THREE.PlaneBufferGeometry(
       settings.width,
       settings.length,
@@ -47,8 +47,18 @@ class Road {
         uColor: new THREE.Uniform(new THREE.Color("#101012")),
         uTime: new THREE.Uniform(0),
         uTravelLength: new THREE.Uniform(settings.length),
-        uDistortionX: new THREE.Uniform(new THREE.Vector2(80, 3)),
-        uDistortionY: new THREE.Uniform(new THREE.Vector2(-40, 2.5)),
+        uDistortionX: new THREE.Uniform(
+          new THREE.Vector2(
+            params.horizontalDistortionX,
+            params.horizontalDistortionY
+          )
+        ),
+        uDistortionY: new THREE.Uniform(
+          new THREE.Vector2(
+            params.verticalDistortionX,
+            params.verticalDistortionY
+          )
+        ),
       },
     });
 
