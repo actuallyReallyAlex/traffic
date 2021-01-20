@@ -5,9 +5,11 @@
   "scripts": {
     "build": "rimraf dist && npm run lint && webpack --mode=production",
     "develop": "webpack-dev-server",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "start": "serve dist"
   },
   "dependencies": {
+    "serve": "^11.3.2",
     "three": "^0.121.1"
   },
   "devDependencies": {
